@@ -33,8 +33,6 @@
 - 珊瑚、漂浮木、灯塔、海鸥、水母、云、气泡、水波纹等全部是本仓库的 canvas 绘制代码
 - 音效由 WebAudio 振荡器实时合成，仓库里没有音频文件
 
-本项目与 Google LLC 无关联，未使用任何 Google / Chrome 商标。
-
 本项目是 DeepSeek Harness 的**非官方社区插件**，与 DeepSeek 无关联、无官方背书。
 角色形象为社区用户的 AI 生成同人二创，非 DeepSeek 官方素材；「DeepSeek」名称及鲸鱼形象
 的权利归 DeepSeek 所有，本项目仅以描述用途（nominative use）提及。

@@ -164,7 +164,6 @@ npm run test:oxygen
 ## 致谢
 
 - 玩法机制参考了 Chromium T-Rex Runner（BSD-3-Clause）的公开设计（不受版权保护的规则/方法层），**代码全部重写**，不含其任何代码或美术素材；机制学习笔记见 `_study/dino-game-study.md`。
-- 本项目与 Google LLC 无关，未使用任何 Google 商标。
 
 ## 许可证
 
