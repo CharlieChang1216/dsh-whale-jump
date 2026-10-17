@@ -47,14 +47,4 @@ jobs:
         run: node _study/test-i18n.cjs
 
       - name: 清单自检
-        run: |
-          node -e "
-          const fs=require('fs'),p=require('./package.json');
-          const must=['main','icon','dsh.bundle.patch',\"dsh.client.platform\",\"exports['./client']\"];
-          const get=(o,path)=>path.split('.').reduce((a,k)=>a&&a[k.replace(/'/g,'')],o);
-          for(const m of must){ if(!get(p,m)) throw new Error('package.json 缺少 '+m) }
-          for(const f of ['lib/index.js','lib/client.js','cordis.patch.yml',p.icon]) {
-            if(!fs.existsSync(f)) throw new Error('缺少文件 '+f);
-          }
-          console.log('manifest ok:', p.name, p.version);
-          "
+        run: node _study/test-manifest.cjs
