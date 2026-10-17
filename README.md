@@ -1,3 +1,5 @@
+- 🌐 [English](README.en.md) ｜ 简体中文
+
 # DSH 小鲸鱼跳（dsh-whale-jump）
 
 ![小鲸鱼跳](assets/whale-hero.png)
