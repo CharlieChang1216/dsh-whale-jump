@@ -62,7 +62,7 @@ dsh-whale-jump/
 ├── docs/
 │   └── miniwhale-source.jpg  # 角色原图（来源存档，不参与运行）
 ├── _study/               # 开发工具：测试套件 / 抠图 / 预览渲染 / 校准
-│   ├── test-*.cjs        # 7 个测试套件，共 116 项
+│   ├── test-*.cjs        # 8 个测试套件，共 128 项
 │   ├── make_assets.py    # 由原图生成 assets/（可复现字节一致）
 │   └── dino-game-study.md# 恐龙游戏机制的学习笔记
 ├── .github/workflows/test.yml  # CI：语法检查 + 全部测试
@@ -157,7 +157,7 @@ New-Item -ItemType Junction -Target "<新路径>" -Path "$env:USERPROFILE\.dsh\p
 - 测试只用 Node 内置模块（`node:fs` / `node:path` / `node:vm`），**不需要 `npm install`**：
 
 ```bash
-npm test          # 跑全部 7 个套件（116 项）
+npm test          # 跑全部 8 个套件（128 项）
 npm run test:engine
 npm run test:oxygen
 ```

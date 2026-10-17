@@ -62,7 +62,7 @@ dsh-whale-jump/
 ├── docs/
 │   └── miniwhale-source.jpg  # source portrait (provenance archive, not used at runtime)
 ├── _study/               # dev tooling: test suites / cutout / preview render / calibration
-│   ├── test-*.cjs        # 7 test suites, 116 cases total
+│   ├── test-*.cjs        # 8 test suites, 128 cases total
 │   ├── make_assets.py    # regenerate assets/ from the source (byte-reproducible)
 │   └── dino-game-study.md# notes on the dino-game mechanics
 ├── .github/workflows/test.yml  # CI: syntax check + all tests
@@ -157,7 +157,7 @@ If the host process is still running an old `lib/index.js`, newly added routes 4
 - Tests use only Node built-ins (`node:fs` / `node:path` / `node:vm`) — **no `npm install` needed**:
 
 ```bash
-npm test          # run all 7 suites (116 cases)
+npm test          # run all 8 suites (128 cases)
 npm run test:engine
 npm run test:oxygen
 ```

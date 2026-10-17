@@ -38,8 +38,9 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "node _study/test-client.cjs && node _study/test-engine.cjs && node _study/test-e2e.cjs && node _study/test-features.cjs && node _study/test-oxygen.cjs && node _study/test-spire.cjs && node _study/test-i18n.cjs",
+    "test": "node _study/test-client.cjs && node _study/test-engine.cjs && node _study/test-e2e.cjs && node _study/test-features.cjs && node _study/test-oxygen.cjs && node _study/test-spire.cjs && node _study/test-i18n.cjs && node _study/test-manifest.cjs",
     "test:engine": "node _study/test-engine.cjs",
+    "test:manifest": "node _study/test-manifest.cjs",
     "test:oxygen": "node _study/test-oxygen.cjs"
   },
   "repository": {
