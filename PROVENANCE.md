@@ -8,14 +8,14 @@
 | 范围 | 许可 |
 |---|---|
 | `lib/`、`cordis.patch.yml`、`package.json`、`_study/`、文档 | **MIT** |
-| `assets/**`（角色立绘、图标） | **不在 MIT 覆盖范围**：由项目作者提供的原创图，随插件原样分发，仅用于运行本插件 |
+| `assets/**`（角色立绘、图标） | **不在 MIT 覆盖范围**：源自第三方用户发布的 AI 生成 DeepSeek 鲸鱼形象二创（原发布者声明可自由使用，无正式许可证）。随插件原样分发，仅用于运行本插件；若权利人提出异议将立即替换 |
 | `docs/miniwhale-source.jpg` | 同上，原始素材，仅作来源存档 |
 
 ## 二、逐项来源
 
 | 文件 | 来源 / 说明 |
 |---|---|
-| `docs/miniwhale-source.jpg` | 项目作者提供的角色原图（850×852 JPEG） |
+| `docs/miniwhale-source.jpg` | 第三方用户发布的 **AI 生成图**（850×852 JPEG）：DeepSeek 鲸鱼形象的同人二创。原作者公开声明可自由使用（无正式许可证文本） |
 | `assets/whale-hero.png` | 由上图的**边界洪水填充抠图 + 1px 羽化**得到，未重绘；长边缩放到 320px |
 | `assets/whale-hero@2x.png` | 同上，2 倍尺寸 |
 | `assets/whale-icon.png` | 同上，但裁成**头肩特写**再缩到 256×256 —— 全身图在几十像素的插件列表里会糊掉 |
@@ -34,6 +34,10 @@
 - 音效由 WebAudio 振荡器实时合成，仓库里没有音频文件
 
 本项目与 Google LLC 无关联，未使用任何 Google / Chrome 商标。
+
+本项目是 DeepSeek Harness 的**非官方社区插件**，与 DeepSeek 无关联、无官方背书。
+角色形象为社区用户的 AI 生成同人二创，非 DeepSeek 官方素材；「DeepSeek」名称及鲸鱼形象
+的权利归 DeepSeek 所有，本项目仅以描述用途（nominative use）提及。
 
 ## 四、权利主张
 

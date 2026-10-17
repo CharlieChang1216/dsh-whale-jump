@@ -169,4 +169,4 @@ npm run test:oxygen
 ## 许可证
 
 - **代码**：MIT（见 [`LICENSE`](LICENSE)）。
-- **美术素材**（`assets/`、`docs/`）不在 MIT 覆盖范围内，来源与权利状态见 [`PROVENANCE.md`](PROVENANCE.md)：角色立绘为用户提供的原创图，插件里只做背景抠图与缩放，未做任何重绘。
+- **美术素材**（`assets/`、`docs/`）不在 MIT 覆盖范围内，来源与权利状态见 [`PROVENANCE.md`](PROVENANCE.md)：角色立绘为第三方用户发布的 AI 生成 DeepSeek 鲸鱼形象二创（原发布者声明可自由使用），插件里只做背景抠图与缩放，未做任何重绘。
