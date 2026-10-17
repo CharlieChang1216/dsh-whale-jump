@@ -110,10 +110,12 @@ After installing, **fully quit the client (including the system tray) and reopen
 # 1) Plugin is registered
 Select-String -Path "$env:USERPROFILE\.dsh\profiles\desktop\package.json" -Pattern "dsh-whale-jump"
 
-# 2) Host routes are alive (port depends on your actual UI URL)
-curl http://127.0.0.1:61963/dsh-whale-jump/diag          # diagnostics: version / portrait status / last error
-curl http://127.0.0.1:61963/dsh-whale-jump/state         # → {"best":0,"plays":0}
-curl -o hero.png http://127.0.0.1:61963/dsh-whale-jump/hero.png
+# 2) Host routes are alive. The port can change on every launch — copy it from the client window's address bar
+$port = 52135   # replace with the port you actually see
+
+curl "http://127.0.0.1:$port/dsh-whale-jump/diag"       # diagnostics: version / portrait status / last error
+curl "http://127.0.0.1:$port/dsh-whale-jump/state"      # → {"best":0,"plays":0}
+curl -o hero.png "http://127.0.0.1:$port/dsh-whale-jump/hero.png"
 
 # 3) State file
 Get-Content "$env:USERPROFILE\.dsh\.dshwj-state.json"

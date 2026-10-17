@@ -110,10 +110,12 @@ dsh plugin --profile desktop add "link:<你的仓库路径>"
 # 1) 插件已登记
 Select-String -Path "$env:USERPROFILE\.dsh\profiles\desktop\package.json" -Pattern "dsh-whale-jump"
 
-# 2) 宿主路由活着（端口以实际为准，看界面 URL）
-curl http://127.0.0.1:61963/dsh-whale-jump/diag          # 诊断：版本 / 立绘状态 / 最近错误
-curl http://127.0.0.1:61963/dsh-whale-jump/state         # → {"best":0,"plays":0}
-curl -o hero.png http://127.0.0.1:61963/dsh-whale-jump/hero.png
+# 2) 宿主路由活着。端口每次启动都可能变——以客户端窗口地址栏里的为准
+$port = 52135   # 换成你实际看到的端口
+
+curl "http://127.0.0.1:$port/dsh-whale-jump/diag"       # 诊断：版本 / 立绘状态 / 最近错误
+curl "http://127.0.0.1:$port/dsh-whale-jump/state"      # → {"best":0,"plays":0}
+curl -o hero.png "http://127.0.0.1:$port/dsh-whale-jump/hero.png"
 
 # 3) 状态文件
 Get-Content "$env:USERPROFILE\.dsh\.dshwj-state.json"

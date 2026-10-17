@@ -1,7 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const ASAR = 'C:\\Users\\24174\\AppData\\Local\\Programs\\DeepSeek Harness\\resources\\app.asar';
+// 安装目录因机器而异，不写死：优先用 DSH_ASAR，其次按 LOCALAPPDATA 推导。
+const ASAR = process.env.DSH_ASAR || path.join(
+  process.env.LOCALAPPDATA || path.join(process.env.USERPROFILE || '', 'AppData', 'Local'),
+  'Programs', 'DeepSeek Harness', 'resources', 'app.asar',
+);
+if (!fs.existsSync(ASAR)) {
+  console.error(`找不到 app.asar：${ASAR}\n用环境变量 DSH_ASAR 指定实际路径。`);
+  process.exit(1);
+}
 const fd = fs.openSync(ASAR, 'r');
 const head = Buffer.alloc(16);
 fs.readSync(fd, head, 0, 16, 0);
