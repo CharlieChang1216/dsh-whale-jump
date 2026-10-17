@@ -38,17 +38,17 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "node _study/test-client.cjs && node _study/test-engine.cjs && node _study/test-e2e.cjs && node _study/test-features.cjs && node _study/test-oxygen.cjs && node _study/test-spire.cjs",
+    "test": "node _study/test-client.cjs && node _study/test-engine.cjs && node _study/test-e2e.cjs && node _study/test-features.cjs && node _study/test-oxygen.cjs && node _study/test-spire.cjs && node _study/test-i18n.cjs",
     "test:engine": "node _study/test-engine.cjs",
     "test:oxygen": "node _study/test-oxygen.cjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_NAME/dsh-whale-jump.git"
+    "url": "git+https://github.com/CharlieChang1216/dsh-whale-jump.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_NAME/dsh-whale-jump/issues"
+    "url": "https://github.com/CharlieChang1216/dsh-whale-jump/issues"
   },
-  "homepage": "https://github.com/YOUR_NAME/dsh-whale-jump#readme",
+  "homepage": "https://github.com/CharlieChang1216/dsh-whale-jump#readme",
   "license": "MIT"
 }

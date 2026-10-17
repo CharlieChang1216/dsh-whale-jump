@@ -18,7 +18,7 @@
 | `docs/miniwhale-source.jpg` | 项目作者提供的角色原图（850×852 JPEG） |
 | `assets/whale-hero.png` | 由上图的**边界洪水填充抠图 + 1px 羽化**得到，未重绘；长边缩放到 320px |
 | `assets/whale-hero@2x.png` | 同上，2 倍尺寸 |
-| `assets/whale-icon.png` | 同上，居中裁成 256×256 插件图标 |
+| `assets/whale-icon.png` | 同上，但裁成**头肩特写**再缩到 256×256 —— 全身图在几十像素的插件列表里会糊掉 |
 
 抠图脚本见 `_study/make_assets.py`，任何人可用原始图复现出**字节一致**的产物。
 

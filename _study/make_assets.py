@@ -85,12 +85,18 @@ hero2 = hero.resize((hero.width * 2, hero.height * 2), Image.LANCZOS)
 hero2.save(os.path.join(OUT_DIR, "whale-hero@2x.png"), optimize=True)
 print("whale-hero@2x.png", hero2.size, os.path.getsize(os.path.join(OUT_DIR, "whale-hero@2x.png")), "bytes")
 
-# --- plugin icon: square canvas, art centred on transparent ----------------
+# --- plugin icon: head-and-shoulder close-up -------------------------------
+# 插件列表里的图标只有几十像素，全身图缩进去后脸会糊成一团。所以裁成头肩特写：
+# 取原图高度 4% 起、64% 高的一块正方形，保留头饰、蝴蝶结与领结，不切下巴。
+# 这两个比例是比出来的：0.02/0.58 会切掉头饰，0.00/0.68 脸又偏小。
 ICON = 256
-icon_art = base.copy()
-icon_art.thumbnail((ICON - 24, ICON - 24), Image.LANCZOS)
-icon = Image.new("RGBA", (ICON, ICON), (0, 0, 0, 0))
-icon.alpha_composite(icon_art, ((ICON - icon_art.width) // 2, (ICON - icon_art.height) // 2))
+ICON_TOP = 0.04
+ICON_SIZE = 0.64
+src_w, src_h = base.size
+side = int(src_h * ICON_SIZE)
+top = int(src_h * ICON_TOP)
+left = max(0, min(src_w - side, src_w // 2 - side // 2))
+icon = base.crop((left, top, left + side, top + side)).resize((ICON, ICON), Image.LANCZOS)
 icon.save(os.path.join(OUT_DIR, "whale-icon.png"), optimize=True)
 print("whale-icon.png", icon.size, os.path.getsize(os.path.join(OUT_DIR, "whale-icon.png")), "bytes")
 

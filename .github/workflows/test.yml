@@ -43,6 +43,9 @@ jobs:
           node _study/test-oxygen.cjs
           node _study/test-spire.cjs
 
+      - name: 语言跟随测试
+        run: node _study/test-i18n.cjs
+
       - name: 清单自检
         run: |
           node -e "

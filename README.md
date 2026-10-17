@@ -16,6 +16,8 @@
 
 三种状态共用同一个插槽组件，不重复注册。等待越久越显眼——这行字平时很淡，不打扰。
 
+> 上表的中文只是示例；实际文案跟随 DSH 的语言设置（见下方「语言」）。
+
 ## 玩法
 
 游戏有**三层空间**，每层要用不同动作应对：
@@ -56,6 +58,21 @@
 
 入口行注册在 `conversation.input.dock` 插槽——这个位置在**空状态页和对话中都会渲染**，一处注册同时覆盖两个场景。
 
+### 语言
+
+UI 文案**跟随 DSH 的语言设置**，不写死中文：
+
+- 首选 `ctx.locale` 服务，也就是「设置 → 通用 → 语言」里选的那项；
+  用户没选过时，该服务本身会退回浏览器推断值 —— 所以这一层等价于「用户实际在用的语言」。
+- 拿不到 locale 服务时，依次看 `<html lang>` 与 `navigator.languages`。
+- 仍然判不出来就落到简体中文。
+
+目前支持 `zh` / `en`（DSH 也就这两个）。文案表挂在 `Proxy` 上，读 `T.idle`
+时才解析语言，因此**切换语言后不需要重建任何东西**；入口行订阅了 locale
+变更事件，切完立即重渲染，游戏浮层里的 HUD 文案也会在下一帧跟着变。
+
+语言服务缺席时插件照常工作（走浏览器推断），不会因为缺依赖而挂掉。
+
 ### 手感是怎么调的
 
 游戏机制参考了 Chromium T-Rex Runner 的公开玩法设计（不受版权保护的规则/方法层），代码全部重写：
@@ -71,7 +88,7 @@
 | 分层解锁 | 海鸥 ≥8、灯塔 ≥6 的当前速度才出现；水母无门槛且开局 ×3 权重 |
 | 动作冲突 | 相邻障碍要求**相反动作**（一个要跳、一个要潜）时，间距再 ×1.7，避免来不及切换 |
 
-这些都有回归测试覆盖（`_study/` 下 6 个套件、共 94 项）。
+这些都有回归测试覆盖（`_study/` 下 7 个套件、共 116 项）。
 
 ### 美术
 
@@ -86,13 +103,13 @@
 ### 方式 A：从 GitHub 安装（推荐给其他人）
 
 ```powershell
-dsh plugin --profile desktop add "github:YOUR_NAME/dsh-whale-jump"
+dsh plugin --profile desktop add "github:CharlieChang1216/dsh-whale-jump"
 ```
 
 或固定版本：
 
 ```powershell
-dsh plugin --profile desktop add "github:YOUR_NAME/dsh-whale-jump#v0.1.0"
+dsh plugin --profile desktop add "github:CharlieChang1216/dsh-whale-jump#v0.1.0"
 ```
 
 > 官方桌面端若拒绝命令行安装，请在桌面端会话里让 DSH 用内置 `plugin_manager` 安装
@@ -132,10 +149,27 @@ Get-Content "$env:USERPROFILE\.dsh\.dshwj-state.json"
 **改了 `lib/index.js` 但没生效**：宿主侧代码**不热重载**，必须完全退出客户端（含系统托盘）再重开。
 `lib/client.js` 是热读的，改完刷新页面即可。
 
+**移动/改名了仓库目录，角色变成一只代码画的蓝色小鲸鱼**：宿主在加载插件时就把包根路径
+（`PACKAGE_ROOT`）固化了，之后读立绘还在用旧路径，于是 `/hero.png` 返回 404，前端退化成
+内置的兜底鲸鱼。修法：
+
+```powershell
+# 1) 把软链指向新目录（junction 而不是拷贝，才不会丢实时生效）
+Remove-Item "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-whale-jump" -Force
+New-Item -ItemType Junction -Target "<新路径>" -Path "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-whale-jump"
+
+# 2) 改 profile/package.json 里的 link: 路径，否则下次 pnpm install 会指回去
+# 3) 完全退出客户端再重开
+```
+
+判断是否已生效：`/dsh-whale-jump/diag` 的 `hero.exists` 应该从 `false` 变 `true`。
+
 ### 已知问题
 
 - **陈旧进程假象**：如果宿主进程还在跑旧版 `lib/index.js`，新加的路由会 404、改过的路由可能
   返回空 400。这不是代码缺陷，重启即好。第一次部署时 `/hero.png` 恒定 400 就是这个原因。
+- **移动目录不需要重新 `add`，但一定需要重启**：软链改了只解决"包能不能被找到"，
+  包根路径是进程启动时算好的，不重启不会重新计算。
 
 ## 目录
 
@@ -153,7 +187,7 @@ dsh-whale-jump/
 ├── docs/
 │   └── miniwhale-source.jpg  # 角色原图（来源存档，不参与运行）
 ├── _study/               # 开发工具：测试套件 / 抠图 / 预览渲染 / 校准
-│   ├── test-*.cjs        # 6 个测试套件，共 94 项
+│   ├── test-*.cjs        # 7 个测试套件，共 116 项
 │   ├── make_assets.py    # 由原图生成 assets/（可复现字节一致）
 │   └── dino-game-study.md# 恐龙游戏机制的学习笔记
 ├── .github/workflows/test.yml  # CI：语法检查 + 全部测试
@@ -168,7 +202,7 @@ dsh-whale-jump/
 ## 开发
 
 ```bash
-npm test          # 跑全部 6 个套件（94 项）
+npm test          # 跑全部 7 个套件（116 项）
 npm run test:engine
 npm run test:oxygen
 ```
