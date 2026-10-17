@@ -1,0 +1,25 @@
+# 依赖与构建产物
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# 预览渲染与抠图的中间产物（可由 _study/ 下的脚本重新生成）
+_study/frame.json
+_study/frame-preview.png
+_study/hero-*.png
+_study/miniwhale-cut.png
+
+# 运行时数据（插件自己会写进 $DSH_HOME，不应进仓库）
+.dshwj-state.json
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志
+*.log
+npm-debug.log*

@@ -1,0 +1,54 @@
+{
+  "name": "dsh-whale-jump",
+  "version": "0.1.0",
+  "description": "DSH 小鲸鱼跳：等回复时玩一局。新会话空状态页与对话流下方的入口，canvas 跑酷小游戏（跳跃/下潜/氧气/计分/最高分）。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "game",
+    "canvas",
+    "runner"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "icon": "./assets/whale-icon.png",
+  "files": [
+    "lib",
+    "assets",
+    "cordis.patch.yml",
+    "README.md",
+    "PROVENANCE.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node _study/test-client.cjs && node _study/test-engine.cjs && node _study/test-e2e.cjs && node _study/test-features.cjs && node _study/test-oxygen.cjs && node _study/test-spire.cjs",
+    "test:engine": "node _study/test-engine.cjs",
+    "test:oxygen": "node _study/test-oxygen.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_NAME/dsh-whale-jump.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_NAME/dsh-whale-jump/issues"
+  },
+  "homepage": "https://github.com/YOUR_NAME/dsh-whale-jump#readme",
+  "license": "MIT"
+}

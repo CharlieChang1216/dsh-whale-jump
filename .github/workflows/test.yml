@@ -1,0 +1,57 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # 插件没有构建步骤、也没有运行时依赖：源码就是发布物。
+      # 测试只用到 node 内置模块，所以这里不需要 install。
+      - name: 语法检查
+        run: |
+          node --check lib/client.js
+          node --check lib/index.js
+
+      - name: 契约与引擎测试
+        run: |
+          node _study/test-client.cjs
+          node _study/test-engine.cjs
+
+      - name: 端到端与功能测试
+        run: |
+          node _study/test-e2e.cjs
+          node _study/test-features.cjs
+
+      - name: 氧气与灯塔测试
+        run: |
+          node _study/test-oxygen.cjs
+          node _study/test-spire.cjs
+
+      - name: 清单自检
+        run: |
+          node -e "
+          const fs=require('fs'),p=require('./package.json');
+          const must=['main','icon','dsh.bundle.patch',\"dsh.client.platform\",\"exports['./client']\"];
+          const get=(o,path)=>path.split('.').reduce((a,k)=>a&&a[k.replace(/'/g,'')],o);
+          for(const m of must){ if(!get(p,m)) throw new Error('package.json 缺少 '+m) }
+          for(const f of ['lib/index.js','lib/client.js','cordis.patch.yml',p.icon]) {
+            if(!fs.existsSync(f)) throw new Error('缺少文件 '+f);
+          }
+          console.log('manifest ok:', p.name, p.version);
+          "
