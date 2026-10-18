@@ -1,6 +1,6 @@
 {
   "name": "dsh-whale-jump",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DSH 小鲸鱼跳：等回复时玩一局。新会话空状态页与对话流下方的入口，canvas 跑酷小游戏（跳跃/下潜/氧气/计分/最高分）。",
   "keywords": [
     "dsh",
@@ -53,5 +53,8 @@
     "url": "https://github.com/CharlieChang1216/dsh-whale-jump/issues"
   },
   "homepage": "https://github.com/CharlieChang1216/dsh-whale-jump#readme",
+  "engines": {
+    "node": ">=20"
+  },
   "license": "MIT"
 }

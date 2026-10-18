@@ -74,42 +74,73 @@ dsh-whale-jump/
 
 ## Installation
 
-### Official desktop client (Electron) — read this first ⚠️
+The same code ships for both official forms; only the profile name differs:
 
-The desktop injection chain is collected only once at startup, and `dsh plugin` needs pnpm on PATH. If the official desktop client rejects the command-line install, ask DSH inside a **desktop session to use its built-in `plugin_manager`** to install `dsh-whale-jump` (source = the GitHub repo URL `https://github.com/CharlieChang1216/dsh-whale-jump`).
+| | Web (`dsh web`, browser UI) | Desktop (Electron client) |
+| --- | --- | --- |
+| profile | `web` | `desktop` |
+| install | `dsh plugin --profile web add "<source>"` | `dsh plugin --profile desktop add "<source>"` |
+| launch | run `dsh web`, open the URL it prints | just open the client |
+| prerequisite | `dsh` on PATH | **start the desktop client fully once, then quit it completely** |
+
+> Skip that one boot and `dsh plugin --profile desktop` exits with: `Open DeepSeek Harness Desktop once to initialize its profile, then fully quit it before running dsh plugin --profile desktop.` That is the desktop client generating its profile on first launch — not a plugin problem.
 
 ### Option A: Install from GitHub (recommended for others)
+
+**Web:**
+
+```powershell
+dsh plugin --profile web add "github:CharlieChang1216/dsh-whale-jump"
+dsh web
+```
+
+**Desktop:**
 
 ```powershell
 dsh plugin --profile desktop add "github:CharlieChang1216/dsh-whale-jump"
 ```
 
-Or pin a version:
+To pin a version, use `github:CharlieChang1216/dsh-whale-jump#v0.1.1` (tag from Releases) as the source — same for both forms.
 
-```powershell
-dsh plugin --profile desktop add "github:CharlieChang1216/dsh-whale-jump#v0.1.0"
-```
+The first GitHub install clones the whole repo. On a slow network pnpm logs a few `HEAD https://github.com/... ETIMEDOUT` retries before succeeding (about 2 minutes in our test) — that is expected.
 
 ### Option B: Local dev install (symlink, source changes apply live)
 
 ```powershell
+dsh plugin --profile web add "link:<your repo path>"
+# or
 dsh plugin --profile desktop add "link:<your repo path>"
 ```
 
-After installing, **fully quit the client (including the system tray) and reopen it**. `link:` is a symlink install — source changes apply live (host-side changes need a restart), but **do not move the repo directory**; after moving you must `add` it again.
+After installing, **fully quit the client (including the system tray) and reopen it**; for the Web form, restart `dsh web`. `link:` is a symlink install — source changes apply live (host-side changes need a restart), but **do not move the repo directory**; after moving you must `add` it again.
 
-### Install notes for AI (Web use; desktop uses the `plugin_manager` hint above)
+### Install notes for AI
 
 - This is a standard DSH bundle plugin; `main` is `lib/index.js`, mounted via `cordis.patch.yml` and delivered via `exports["./client"]` — **no build required**.
+- If command-line install is rejected on desktop (the injection chain is collected only once at startup, and `dsh plugin` needs pnpm on PATH), install `dsh-whale-jump` from the **built-in `plugin_manager` inside a desktop session** instead, with source `https://github.com/CharlieChang1216/dsh-whale-jump`.
 - Runtime data lives in `$DSH_HOME/.dshwj-state.json` (high score, play count); it never touches the profile or node_modules (which may be read-only).
+
+## Compatibility & requirements
+
+| Item | Requirement | Verified on |
+| --- | --- | --- |
+| DSH | **≥ 0.2.0** | desktop `0.2.1-rc.2` (same version for the CLI) |
+| Node.js | **≥ 20** (tests only — the plugin itself has zero dependencies) | `24.19.0` / `24.21.0` |
+| pnpm | used internally by `dsh plugin`, must be on PATH | `11.28.5` |
+| OS | no platform-specific API | Windows 11 x64 (macOS / Linux untested) |
+| Browser | needs Canvas 2D; `backdrop-filter` optional (without it the backdrop is simply not blurred) | Chromium / Edge |
+
+**Why DSH ≥ 0.2.0**: the plugin relies on the `dsh.client` client-module channel (`/plugins/<id>/client.js`), the `conversation.input.dock` slot, the `locale` service, and registering routes on the `webServer` service. Our verified environment is `0.2.1-rc.2`; the 0.2.0 line is expected to work, while 0.1.x was not verified and carries no promise.
+
+**No `npm install`, no build step, no runtime dependencies**: `lib/client.js` is hand-written in the DSH client-module format, and `lib/index.js` uses only Node built-ins (`node:fs` / `node:path` / `node:url` / `node:os`).
 
 ## Verification
 
 ```powershell
-# 1) Plugin is registered
-Select-String -Path "$env:USERPROFILE\.dsh\profiles\desktop\package.json" -Pattern "dsh-whale-jump"
+# 1) Plugin is registered (swap web for desktop on the desktop client)
+Select-String -Path "$env:USERPROFILE\.dsh\profiles\web\package.json" -Pattern "dsh-whale-jump"
 
-# 2) Host routes are alive. The port can change on every launch — copy it from the client window's address bar
+# 2) Host routes are alive. The port can change on every launch — copy it from the URL `dsh web` prints or from the client window's address bar
 $port = 52135   # replace with the port you actually see
 
 curl "http://127.0.0.1:$port/dsh-whale-jump/diag"       # diagnostics: version / portrait status / last error
@@ -163,6 +194,7 @@ npm run test:oxygen
 
 - CI (GitHub Actions, Node 20/22 matrix) runs syntax check + all tests + manifest self-check on every push / PR, using the same scripts locally and in CI.
 - Runtime data: `$DSH_HOME/.dshwj-state.json` (high score, play count).
+- **Versioning rule**: `0.1.x` where `x` equals the number of releases so far — the 1st release is `0.1.1`, the 2nd is `0.1.2`, and `0.1.0` stays as the pre-release tag. Bump `version` in `package.json` first, then `git tag v0.1.x && git push --tags`.
 
 ## Acknowledgements
 

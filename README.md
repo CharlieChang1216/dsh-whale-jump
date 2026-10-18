@@ -74,42 +74,73 @@ dsh-whale-jump/
 
 ## 安装
 
-### 官方桌面端（Electron 客户端）请先看这一节 ⚠️
+同一份代码支持两种官方形态，装法只差 profile 名：
 
-桌面端的注入链只支持一次性收集，且 `dsh plugin` 需要 pnpm 在 PATH 上。官方桌面端若拒绝命令行安装，请在**桌面端会话里让 DSH 用内置 `plugin_manager`** 安装 `dsh-whale-jump`（来源填 GitHub 仓库地址 `https://github.com/CharlieChang1216/dsh-whale-jump`）。
+| | Web（`dsh web`，浏览器 UI） | 桌面端（Electron 客户端） |
+| --- | --- | --- |
+| profile | `web` | `desktop` |
+| 安装 | `dsh plugin --profile web add "<源>"` | `dsh plugin --profile desktop add "<源>"` |
+| 启动 | `dsh web` 后打开它打印的地址 | 直接打开客户端 |
+| 前置条件 | `dsh` 在 PATH 上 | **先完整启动一次桌面客户端，再完全退出** |
+
+> 桌面端缺少「开机一次」这一步时，`dsh plugin --profile desktop` 会以这个错误退出：`Open DeepSeek Harness Desktop once to initialize its profile, then fully quit it before running dsh plugin --profile desktop.` 这不是插件的问题，是桌面端的 profile 由客户端首次启动时生成。
 
 ### 方式 A：从 GitHub 安装（推荐给其他人）
+
+**Web：**
+
+```powershell
+dsh plugin --profile web add "github:CharlieChang1216/dsh-whale-jump"
+dsh web
+```
+
+**桌面端：**
 
 ```powershell
 dsh plugin --profile desktop add "github:CharlieChang1216/dsh-whale-jump"
 ```
 
-或固定版本：
+固定版本（`<tag>` 换成 Releases 里的标签，例如 `v0.1.1`）把源写成 `github:CharlieChang1216/dsh-whale-jump#v0.1.1` 即可，两种形态同理。
 
-```powershell
-dsh plugin --profile desktop add "github:CharlieChang1216/dsh-whale-jump#v0.1.0"
-```
+首次从 GitHub 安装要 clone 整个仓库，网络慢时 pnpm 会先报几次 `HEAD https://github.com/... ETIMEDOUT` 再重试成功（实测约 2 分钟），属正常现象。
 
 ### 方式 B：本地开发安装（软链，改源码即时生效）
 
 ```powershell
+dsh plugin --profile web add "link:<你的仓库路径>"
+# 或
 dsh plugin --profile desktop add "link:<你的仓库路径>"
 ```
 
-装完**完全退出客户端（含系统托盘）再重新打开**。`link:` 是软链安装，改源码即时生效（宿主侧改动需重启），但**不要移动仓库目录**，移动后要重新 `add` 一次。
+装完**完全退出客户端（含系统托盘）再重新打开**；Web 形态则是重启 `dsh web`。`link:` 是软链安装，改源码即时生效（宿主侧改动需重启），但**不要移动仓库目录**，移动后要重新 `add` 一次。
 
-### 给 AI 的安装说明（Web 使用；桌面端使用上面的 `plugin_manager` 提示）
+### 给 AI 的安装说明
 
 - 本插件是标准 DSH bundle 插件，`main` 为 `lib/index.js`，靠 `cordis.patch.yml` 挂载、`exports["./client"]` 下发前端，**不需要构建**。
+- 桌面端若命令行安装被拒（注入链只支持一次性收集、`dsh plugin` 需要 pnpm 在 PATH 上），请改用**桌面端会话里的内置 `plugin_manager`**，来源填 `https://github.com/CharlieChang1216/dsh-whale-jump`。
 - 运行时数据写在 `$DSH_HOME/.dshwj-state.json`（最高分、局数），不碰 profile、不碰 node_modules（可能只读）。
+
+## 兼容与运行要求
+
+| 项目 | 要求 | 实测环境 |
+| --- | --- | --- |
+| DSH | **≥ 0.2.0** | 桌面端 `0.2.1-rc.2`（同版本 CLI） |
+| Node.js | **≥ 20**（仅跑测试需要，插件本身零依赖） | `24.19.0` / `24.21.0` |
+| pnpm | `dsh plugin` 内部使用，需在 PATH 上 | `11.28.5` |
+| 操作系统 | 无平台特定 API | Windows 11 x64（macOS / Linux 未实测） |
+| 浏览器 | 需要 Canvas 2D；`backdrop-filter` 可选（不支持只是背景不模糊） | Chromium / Edge |
+
+**为什么是 DSH ≥ 0.2.0**：插件用到了 `dsh.client` 客户端模块通道（`/plugins/<id>/client.js`）、`conversation.input.dock` 插槽、`locale` 服务与 `webServer` 服务注册路由。实测环境是 `0.2.1-rc.2`；0.2.0 系列预期可用，0.1.x 未做验证，不做承诺。
+
+**无需 `npm install`、无需构建、无运行时依赖**：`lib/client.js` 是手写的 DSH 客户端模块格式，`lib/index.js` 只用 Node 内置模块（`node:fs` / `node:path` / `node:url` / `node:os`）。
 
 ## 验证
 
 ```powershell
-# 1) 插件已登记
-Select-String -Path "$env:USERPROFILE\.dsh\profiles\desktop\package.json" -Pattern "dsh-whale-jump"
+# 1) 插件已登记（桌面端把 web 换成 desktop）
+Select-String -Path "$env:USERPROFILE\.dsh\profiles\web\package.json" -Pattern "dsh-whale-jump"
 
-# 2) 宿主路由活着。端口每次启动都可能变——以客户端窗口地址栏里的为准
+# 2) 宿主路由活着。端口每次启动都可能变——以 `dsh web` 打印的地址或客户端窗口地址栏为准
 $port = 52135   # 换成你实际看到的端口
 
 curl "http://127.0.0.1:$port/dsh-whale-jump/diag"       # 诊断：版本 / 立绘状态 / 最近错误
@@ -163,6 +194,7 @@ npm run test:oxygen
 
 - CI（GitHub Actions，Node 20/22 矩阵）在每次 push / PR 时跑语法检查 + 全部测试 + 清单自检，本地与 CI 用同一组脚本。
 - 运行时数据：`$DSH_HOME/.dshwj-state.json`（最高分、局数）。
+- **版本号规则**：`0.1.x`，`x` 等于已发布的次数——第 1 次发布是 `0.1.1`，第 2 次是 `0.1.2`，`0.1.0` 保留为发布前的初始 tag。每次打 tag 前先改 `package.json` 的 `version`，再 `git tag v0.1.x && git push --tags`。
 
 ## 致谢
 
