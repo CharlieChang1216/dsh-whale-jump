@@ -10,6 +10,7 @@
     "canvas",
     "runner"
   ],
+  "author": "CharlieChang1216 <CharlieChang1216@users.noreply.github.com>",
   "type": "module",
   "main": "lib/index.js",
   "icon": "./assets/whale-icon.png",
@@ -18,6 +19,7 @@
     "assets",
     "cordis.patch.yml",
     "README.md",
+    "README.en.md",
     "PROVENANCE.md",
     "LICENSE"
   ],

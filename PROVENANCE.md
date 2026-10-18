@@ -16,8 +16,7 @@
 | 文件 | 来源 / 说明 |
 |---|---|
 | `docs/miniwhale-source.jpg` | 第三方用户发布的 **AI 生成图**（850×852 JPEG）：DeepSeek 鲸鱼形象的同人二创。原作者公开声明可自由使用（无正式许可证文本） |
-| `assets/whale-hero.png` | 由上图的**边界洪水填充抠图 + 1px 羽化**得到，未重绘；长边缩放到 320px |
-| `assets/whale-hero@2x.png` | 同上，2 倍尺寸 |
+| `assets/whale-hero.png` | 由上图的**边界洪水填充抠图 + 1px 羽化**得到，未重绘；长边缩放到 320px。运行时由 canvas 按 devicePixelRatio 缩放绘制，不另出 2x 文件 |
 | `assets/whale-icon.png` | 同上，但裁成**头肩特写**再缩到 256×256 —— 全身图在几十像素的插件列表里会糊掉 |
 
 抠图脚本见 `_study/make_assets.py`，任何人可用原始图复现出**字节一致**的产物。

@@ -57,7 +57,6 @@ dsh-whale-jump/
 │   └── client.js         # 客户端侧：入口行组件 + 游戏引擎 + 浮层（无构建步骤）
 ├── assets/
 │   ├── whale-hero.png    # 角色立绘（透明底）
-│   ├── whale-hero@2x.png # 2x 版本
 │   └── whale-icon.png    # 插件列表图标
 ├── docs/
 │   └── miniwhale-source.jpg  # 角色原图（来源存档，不参与运行）

@@ -2,8 +2,10 @@
 
 Outputs (into the plugin's assets dir):
   whale-hero.png     base sprite, tightly cropped, transparent
-  whale-hero@2x.png  same at 2x for HiDPI canvases
   whale-icon.png     256x256 square icon for the DSH plugin list
+
+只出一张立绘：canvas 在 HiDPI 下由 `resize()` 按 devicePixelRatio 放大画布，
+再用 `drawImage` 把这张图缩放上去，不需要单独的 @2x 文件。
 
 The artwork is a single front-facing chibi pose, so the game animates it
 procedurally (bob / squash / tilt) rather than swapping frames.
@@ -80,10 +82,6 @@ hero = base.resize((w, h), Image.LANCZOS)
 hero = hero.crop(hero.getbbox())
 hero.save(os.path.join(OUT_DIR, "whale-hero.png"), optimize=True)
 print("whale-hero.png", hero.size, os.path.getsize(os.path.join(OUT_DIR, "whale-hero.png")), "bytes")
-
-hero2 = hero.resize((hero.width * 2, hero.height * 2), Image.LANCZOS)
-hero2.save(os.path.join(OUT_DIR, "whale-hero@2x.png"), optimize=True)
-print("whale-hero@2x.png", hero2.size, os.path.getsize(os.path.join(OUT_DIR, "whale-hero@2x.png")), "bytes")
 
 # --- plugin icon: head-and-shoulder close-up -------------------------------
 # 插件列表里的图标只有几十像素，全身图缩进去后脸会糊成一团。所以裁成头肩特写：

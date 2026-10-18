@@ -57,7 +57,6 @@ dsh-whale-jump/
 │   └── client.js         # client side: entry-line component + game engine + overlay (no build)
 ├── assets/
 │   ├── whale-hero.png    # character portrait (transparent)
-│   ├── whale-hero@2x.png # 2x version
 │   └── whale-icon.png    # plugin-list icon
 ├── docs/
 │   └── miniwhale-source.jpg  # source portrait (provenance archive, not used at runtime)
