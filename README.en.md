@@ -85,7 +85,22 @@ The same code ships for both official forms; only the profile name differs:
 
 > Skip that one boot and `dsh plugin --profile desktop` exits with: `Open DeepSeek Harness Desktop once to initialize its profile, then fully quit it before running dsh plugin --profile desktop.` That is the desktop client generating its profile on first launch — not a plugin problem.
 
-### Option A: Install from GitHub (recommended for others)
+### Option A: Install from npm (simplest)
+
+**Web:**
+
+```powershell
+dsh plugin --profile web add dsh-whale-jump
+dsh web
+```
+
+**Desktop:**
+
+```powershell
+dsh plugin --profile desktop add dsh-whale-jump
+```
+
+### Option B: Install from GitHub (to track the main branch)
 
 **Web:**
 
@@ -104,7 +119,7 @@ To pin a version, use `github:CharlieChang1216/dsh-whale-jump#v0.1.1` (tag from 
 
 The first GitHub install clones the whole repo. On a slow network pnpm logs a few `HEAD https://github.com/... ETIMEDOUT` retries before succeeding (about 2 minutes in our test) — that is expected.
 
-### Option B: Local dev install (symlink, source changes apply live)
+### Option C: Local dev install (symlink, source changes apply live)
 
 ```powershell
 dsh plugin --profile web add "link:<your repo path>"

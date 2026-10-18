@@ -85,7 +85,22 @@ dsh-whale-jump/
 
 > 桌面端缺少「开机一次」这一步时，`dsh plugin --profile desktop` 会以这个错误退出：`Open DeepSeek Harness Desktop once to initialize its profile, then fully quit it before running dsh plugin --profile desktop.` 这不是插件的问题，是桌面端的 profile 由客户端首次启动时生成。
 
-### 方式 A：从 GitHub 安装（推荐给其他人）
+### 方式 A：从 npm 安装（最简单）
+
+**Web：**
+
+```powershell
+dsh plugin --profile web add dsh-whale-jump
+dsh web
+```
+
+**桌面端：**
+
+```powershell
+dsh plugin --profile desktop add dsh-whale-jump
+```
+
+### 方式 B：从 GitHub 安装（想跟 main 分支走时用）
 
 **Web：**
 
@@ -104,7 +119,7 @@ dsh plugin --profile desktop add "github:CharlieChang1216/dsh-whale-jump"
 
 首次从 GitHub 安装要 clone 整个仓库，网络慢时 pnpm 会先报几次 `HEAD https://github.com/... ETIMEDOUT` 再重试成功（实测约 2 分钟），属正常现象。
 
-### 方式 B：本地开发安装（软链，改源码即时生效）
+### 方式 C：本地开发安装（软链，改源码即时生效）
 
 ```powershell
 dsh plugin --profile web add "link:<你的仓库路径>"
